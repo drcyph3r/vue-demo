@@ -38,11 +38,7 @@ export default {
       posts: [],
     };
   },
-  computed: {
-    getUserId() {
-      return this.$store.state.userId;
-    },
-  },
+
   mounted() {
     this.getPosts();
   },
@@ -51,7 +47,9 @@ export default {
       this.ui.loading = true;
       try {
         const posts = await this.$http.get(
-          `https://jsonplaceholder.typicode.com/posts?userId=${this.getUserId}`
+          `https://jsonplaceholder.typicode.com/posts?userId=${localStorage.getItem(
+            "userId"
+          )}`
         );
         this.posts = posts.data;
         this.ui.loading = false;
