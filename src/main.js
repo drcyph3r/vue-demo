@@ -18,6 +18,8 @@ router.beforeEach((to, _, next) => {
     if (!localStorage.getItem("userId")) {
       return next("/");
     }
+  } else if (localStorage.getItem("userId")) {
+    return next("/posts");
   }
   next();
 });
