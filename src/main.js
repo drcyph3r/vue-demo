@@ -10,6 +10,18 @@ Vue.use(VueContentPlaceholders);
 Vue.prototype.$http = Axios;
 Vue.config.productionTip = false;
 
+// Navigation guard
+const allowedRoutes = ["/"]; // allowed to visit without getting logged in
+
+router.beforeEach((to, _, next) => {
+  if (!allowedRoutes.includes(to.path)) {
+    if (!localStorage.getItem("userId")) {
+      return next("/");
+    }
+  }
+  next();
+});
+
 new Vue({
   router,
   store,

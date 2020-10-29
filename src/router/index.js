@@ -4,22 +4,9 @@ import Login from "../views/Login.vue";
 import CreatePost from "../views/CreatePost.vue";
 import Posts from "../views/Posts.vue";
 import Post from "../views/Post.vue";
+import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
-
-function guardMyroute(to, from, next) {
-  var isAuthenticated = false;
-  if (localStorage.getItem("userId")) isAuthenticated = true;
-  else isAuthenticated = false;
-
-  if (isAuthenticated) {
-    next();
-  } else {
-    next({
-      name: "Login"
-    });
-  }
-}
 
 const routes = [
   {
@@ -31,21 +18,30 @@ const routes = [
   {
     path: "/create-post",
     name: "CreatePost",
-    beforeEnter: guardMyroute,
     component: CreatePost,
     meta: { title: "Create Post" }
   },
   {
     path: "/posts",
     name: "Posts",
-    beforeEnter: guardMyroute,
     component: Posts,
     meta: { title: "Posts" }
   },
   {
     path: "/post/:id",
-    beforeEnter: guardMyroute,
     component: Post
+  },
+  {
+    path: "/404",
+    name: "404",
+    component: NotFound,
+    meta: { title: "Error 404" }
+  },
+  {
+    path: "*",
+    name: "404",
+    component: NotFound,
+    meta: { title: "Error 404" }
   }
 ];
 

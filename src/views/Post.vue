@@ -16,21 +16,23 @@
 
         <div v-if="comments">
           <p class="text-md text-gray-900 font-medium mb-4">Comments</p>
-          <textarea
-            v-model="form.comment"
-            class="appearance-none border rounded w-full mb-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-black"
-            id="comment"
-            type="text"
-            rows="2"
-            placeholder="Enter comment..."
-            required
-          />
-          <button
-            class="bg-black text-white text-sm px-6 py-1 mb-6"
-            @click="submitComment"
-          >
-            Submit
-          </button>
+          <form @submit.prevent="submitComment">
+            <textarea
+              v-model="form.comment"
+              class="appearance-none border rounded w-full mb-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-black"
+              id="comment"
+              type="text"
+              rows="2"
+              placeholder="Enter comment..."
+              required
+            />
+            <button
+              type="submit"
+              class="bg-black text-white text-sm px-6 py-1 mb-6"
+            >
+              Submit
+            </button>
+          </form>
           <div v-for="(comment, i) in comments" :key="i" class="mb-4">
             <p class="text-sm">{{ comment.body }}</p>
             <p class="text-xs text-gray-500">{{ comment.email }}</p>
@@ -55,7 +57,7 @@ export default {
       },
       title: null,
       body: null,
-      comments: [],
+      comments: null,
     };
   },
   mounted() {
@@ -78,7 +80,7 @@ export default {
         this.ui.loading = false;
       } catch (error) {
         this.ui.loading = false;
-        console.log(error);
+        this.$router.push("/404");
       }
     },
 
@@ -94,12 +96,14 @@ export default {
     },
 
     submitComment() {
-      let comment = this.form.comment;
-      this.comments.splice(0, 0, {
-        body: comment,
-        email: "johndoe@example.com",
-      });
-      this.form.comment = "";
+      if (this.form.comment) {
+        let comment = this.form.comment;
+        this.comments.splice(0, 0, {
+          body: comment,
+          email: "johndoe@example.com",
+        });
+        this.form.comment = "";
+      }
     },
   },
 };
